@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - Plataforma de Cursos{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">Iniciar Sesión</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    </form>
+    <a href="{% url 'register' %}" class="mt-3 d-block">¿No tienes una cuenta? Regístrate aquí.</a>
+
+{% endblock %}

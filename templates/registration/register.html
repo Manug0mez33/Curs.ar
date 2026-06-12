@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registro - Plataforma de Cursos{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">Crear una cuenta</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+{% endblock %}
