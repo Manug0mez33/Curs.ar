@@ -10,7 +10,7 @@ class Categoria(models.Model):
         return self.nombre
 
 class Curso(models.Model):
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
     titulo = models.CharField(max_length=200)
     descripcion = models.TextField()
     imagen = models.ImageField(upload_to='cursos/', blank=True, null=True)

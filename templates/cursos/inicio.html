@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Plataforma de Cursos{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3">Bienvenido a Nuestra Plataforma de Cursos</h1>
+            <p class="lead text-muted">Explora nuestros cursos disponibles y comienza a aprender</p>
+        </div>
+    </div>
+
+    {% if cursos %}
+        <div class="row">
+            {% for curso in cursos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            {% if curso.imagen %}
+                                <img src="{{ curso.imagen.url }}" class="card-img-top mb-3" alt="{{ curso.titulo }}">
+                            {% else %}
+                                <img src="/media/default_course_image.jpg" class="card-img-top mb-3" alt="{{ curso.titulo }}">
+                            {% endif %}
+                            <h5 class="card-title">{{ curso.titulo }}</h5>
+                            {% if curso.categoria %}
+                                <span class="badge bg-secondary mb-2">{{ curso.categoria.nombre }}</span>
+                            {% endif %}
+                            {% if curso.descripcion %}
+                                <p class="card-text text-muted">{{ curso.descripcion|truncatewords:20 }}</p>
+                            {% endif %}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Instructor: {{ curso.instructor }}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <a href="{% url 'detalle_curso' curso.id %}" class="btn btn-primary btn-sm w-100">Ver Curso</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">No hay cursos disponibles</h4>
+            <p>Por el momento no hay cursos disponibles. Por favor, intenta más tarde.</p>
+        </div>
+    {% endif %}
+        <div class="text-center mt-4">
+            <a href="{% url 'crear_curso' %}" class="btn btn-success">Agregar Nuevo Curso</a>
+        </div>
+</div>
+{% endblock %}

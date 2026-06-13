@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Curso - Plataforma de Cursos{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Crear Nuevo Curso</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título del Curso</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" required>
+        </div>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción del Curso</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="4"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="instructor" class="form-label">Instructor</label>
+            <input type="text" class="form-control" id="instructor" name="instructor" required>
+        </div>
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select class="form-select" id="categoria" name="categoria">
+                <option value="">Selecciona una categoría</option>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="btn btn-link p-0 mt-2" data-bs-toggle="modal" data-bs-target="#categoriaModal">Agregar Nueva Categoría</button>
+        </div>
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen del Curso</label>
+            <input type="file" class="form-control" id="imagen" name="imagen">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Curso</button>
+    </form>
+</div>
+
+<div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoriaModalLabel">Agregar Nueva Categoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formCategoria" method="post" action="{% url 'guardar_categoria' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombreCategoria" class="form-label">Nombre de la Categoría</label>
+                        <input type="text" class="form-control" id="nombreCategoria" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcionCategoria" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionCategoria" name="descripcion" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Categoría</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('formCategoria').addEventListener('submit', function() {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('categoriaModal'));
+    if (modal) modal.hide();
+});
+</script>
+{% endblock %}

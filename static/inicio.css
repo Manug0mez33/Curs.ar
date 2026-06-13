@@ -1,0 +1,101 @@
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+}
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.hero-section p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
+.btn-hero {
+    margin: 0 10px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+.cursos-section {
+    padding: 60px 0;
+}
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #333;
+}
+.curso-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+}
+.curso-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.curso-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border: none;
+}
+.curso-card .card-header h5 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.curso-card .card-body {
+    padding: 20px;
+}
+.curso-card .card-footer {
+    background-color: #f8f9fa;
+    border: none;
+    padding: 15px 20px;
+}
+.btn-curso {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+.btn-curso:hover {
+    transform: scale(1.02);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    color: white;
+}
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+.empty-state i {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+.stats-section {
+    background: #f8f9fa;
+    padding: 40px 0;
+}
+.stat-item {
+    text-align: center;
+    padding: 20px;
+}
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #667eea;
+}
+.stat-label {
+    color: #666;
+    margin-top: 10px;
+}
