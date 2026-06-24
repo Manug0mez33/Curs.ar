@@ -1,1 +1,39 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-title">{{ curso.titulo }}</h2>
+        {% if curso.categoria %}
+            <span class="badge bg-secondary mb-2">{{ curso.categoria.nombre }}</span>
+        {% endif %}
+        <p class="card-text">{{ curso.descripcion }}</p>
+        
+        <div class="curso-imagen-wrapper-detalle">
+            {% if curso.imagen %}
+                <img src="{{ curso.imagen.url }}" alt="{{ curso.titulo }}">
+            {% else %}
+                <img src="/media/default_course_image.jpg" alt="{{ curso.titulo }}">
+            {% endif %}
+        </div>
+        <p class="card-text"><strong>Instructor:</strong> {{ curso.instructor.nombre }} {{ curso.instructor.apellido }}</p>
+        <p class="card-text"><strong>Email del Instructor:</strong> {{ curso.instructor.email }}</p>
+        <p class="card-text"><strong>Teléfono del Instructor:</strong> {{ curso.instructor.telefono }}</p> 
+        <p class="card-text"><strong>Duración:</strong> {{ curso.duracion }} horas</p>
+        <p class="card-text"><strong>Precio:</strong> ${{ curso.precio }}</p>
+        
+        <div class="d-flex gap-2">
+            {% if user.is_authenticated and user == curso.instructor %}
+                <a href="{% url 'listar_modulos' curso.id %}" class="btn btn-warning">Gestionar Módulos</a>
+                <a href="{% url 'eliminar_curso' curso.id %}" class="btn btn-danger">Eliminar Curso</a>
+            {% elif user.is_authenticated and not inscripto %}
+                <a href="{% url 'inscribirse' curso.id %}" class="btn btn-primary">Inscribirse</a>
+            {% elif user.is_authenticated and inscripto %}
+                <a href="{% url 'contenido_curso' curso.id %}" class="btn btn-success">Ver Contenido</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary">Inicia Sesión para Inscribirse</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

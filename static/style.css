@@ -1,4 +1,3 @@
-/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -10,12 +9,10 @@ body {
     background-color: #f8f9fa;
 }
 
-/* Contenido principal */
 main {
     min-height: calc(100vh - 200px);
 }
 
-/* Títulos */
 h2 {
     color: #333;
     margin-bottom: 30px;
@@ -31,8 +28,7 @@ h1 {
     font-weight: 600;
 }
 
-/* Formulario personalizado */
-form {
+main form {
     background: white;
     padding: 30px;
     border-radius: 10px;
@@ -40,13 +36,11 @@ form {
     max-width: 600px;
 }
 
-/* Párrafos del formulario (as_p) */
-form p {
+main form p {
     margin-bottom: 20px;
 }
 
-/* Labels */
-form label {
+main form label {
     display: block;
     margin-bottom: 8px;
     color: #333;
@@ -54,15 +48,14 @@ form label {
     font-size: 14px;
 }
 
-/* Inputs, textareas y selects */
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form input[type="tel"],
-form input[type="date"],
-form input[type="number"],
-form textarea,
-form select {
+main form input[type="text"],
+main form input[type="email"],
+main form input[type="password"],
+main form input[type="tel"],
+main form input[type="date"],
+main form input[type="number"],
+main form textarea,
+main form select {
     width: 100%;
     padding: 12px 15px;
     border: 2px solid #e0e0e0;
@@ -73,41 +66,38 @@ form select {
     background-color: #fafafa;
 }
 
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="password"]:focus,
-form input[type="tel"]:focus,
-form input[type="date"]:focus,
-form input[type="number"]:focus,
-form textarea:focus,
-form select:focus {
+main form input[type="text"]:focus,
+main form input[type="email"]:focus,
+main form input[type="password"]:focus,
+main form input[type="tel"]:focus,
+main form input[type="date"]:focus,
+main form input[type="number"]:focus,
+main form textarea:focus,
+main form select:focus {
     outline: none;
     border-color: #667eea;
     background-color: white;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Lista de errores del formulario */
-ul.errorlist {
+main ul.errorlist {
     list-style: none;
     margin: 8px 0;
     padding: 0;
 }
 
-ul.errorlist li {
+main ul.errorlist li {
     color: #dc3545;
     font-size: 12px;
     margin: 4px 0;
 }
 
-/* Mensajes de error en rojo */
 .errorlist {
     color: #dc3545;
     font-size: 12px;
     margin: 5px 0;
 }
 
-/* Botones */
 .btn {
     padding: 12px 24px;
     border: none;
@@ -132,7 +122,6 @@ ul.errorlist li {
     transform: translateY(0);
 }
 
-/* Alertas y mensajes */
 .messages {
     margin-bottom: 20px;
 }
@@ -172,7 +161,7 @@ ul.errorlist li {
     margin: 5px 0;
 }
 
-/* Enlace de inicio de sesión */
+
 .login-link {
     text-align: center;
     margin-top: 20px;
@@ -202,7 +191,61 @@ footer p {
     margin: 0;
 }
 
-/* Responsive */
+
+.curso-imagen-wrapper {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.curso-imagen-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+
+.curso-imagen-wrapper-detalle {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    margin: 20px 0;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.curso-imagen-wrapper-detalle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+
+
 @media (max-width: 768px) {
     form {
         padding: 20px;

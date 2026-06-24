@@ -13,7 +13,10 @@ class Curso(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
     titulo = models.CharField(max_length=200)
     descripcion = models.TextField()
+    instructor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='cursos/', blank=True, null=True)
+    precio = models.PositiveIntegerField(default=0, help_text='Precio en pesos')
+    duracion = models.PositiveIntegerField(help_text='Duración en horas', default=0)
 
     def __str__(self):
         return self.titulo
@@ -48,7 +51,8 @@ class Inscripcion(models.Model):
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        unique_together = ('usuario', 'curso') # Para evitar inscripciones duplicadas
+        unique_together = ('usuario', 'curso') 
 
     def __str__(self):
         return f"{self.usuario.username} - {self.curso.titulo}"
+

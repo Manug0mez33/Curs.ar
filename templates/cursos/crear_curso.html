@@ -4,37 +4,76 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Crear Nuevo Curso</h2>
-    <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Título del Curso</label>
-            <input type="text" class="form-control" id="titulo" name="titulo" required>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Crear Nuevo Curso</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}               
+                <div class="mb-3">
+                    <label for="{{ form.titulo.id_for_label }}" class="form-label">Título del Curso</label>
+                    {{ form.titulo }}
+                    {% if form.titulo.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            {{ form.titulo.errors }}
+                        </div>
+                    {% endif %}
+                </div>      
+                <div class="mb-3">
+                    <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción del Curso</label>
+                    {{ form.descripcion }}
+                    {% if form.descripcion.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            {{ form.descripcion.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.categoria.id_for_label }}" class="form-label">Categoría</label>
+                    {{ form.categoria }}
+                    {% if form.categoria.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            {{ form.categoria.errors }}
+                        </div>
+                    {% endif %}
+                    <button type="button" class="btn btn-link p-0 mt-2" data-bs-toggle="modal" data-bs-target="#categoriaModal">Agregar Nueva Categoría</button>
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.precio.id_for_label }}" class="form-label">Precio ($)</label>
+                    {{ form.precio }}
+                    {% if form.precio.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            <ul class="mb-0">
+                                {% for error in form.precio.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.duracion.id_for_label }}" class="form-label">Duración (horas)</label>
+                    {{ form.duracion }}
+                    {% if form.duracion.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            {{ form.duracion.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen del Curso</label>
+                    {{ form.imagen }}
+                    {% if form.imagen.errors %}
+                        <div class="alert alert-danger mt-2 mb-0">
+                            {{ form.imagen.errors }}
+                        </div>
+                    {% endif %}
+                    <small class="form-text text-muted d-block mt-2">Formatos permitidos: JPG, PNG, GIF (máximo 5MB)</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Crear Curso</button>
+                <a href="{% url 'inicio' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción del Curso</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="4"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="instructor" class="form-label">Instructor</label>
-            <input type="text" class="form-control" id="instructor" name="instructor" required>
-        </div>
-        <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría</label>
-            <select class="form-select" id="categoria" name="categoria">
-                <option value="">Selecciona una categoría</option>
-                {% for categoria in categorias %}
-                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                {% endfor %}
-            </select>
-            <button type="button" class="btn btn-link p-0 mt-2" data-bs-toggle="modal" data-bs-target="#categoriaModal">Agregar Nueva Categoría</button>
-        </div>
-        <div class="mb-3">
-            <label for="imagen" class="form-label">Imagen del Curso</label>
-            <input type="file" class="form-control" id="imagen" name="imagen">
-        </div>
-        <button type="submit" class="btn btn-primary">Crear Curso</button>
-    </form>
+    </div>
 </div>
 
 <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
@@ -51,10 +90,6 @@
                         <label for="nombreCategoria" class="form-label">Nombre de la Categoría</label>
                         <input type="text" class="form-control" id="nombreCategoria" name="nombre" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="descripcionCategoria" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcionCategoria" name="descripcion" rows="3"></textarea>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -66,9 +101,10 @@
 </div>
 
 <script>
-document.getElementById('formCategoria').addEventListener('submit', function() {
+document.getElementById('formCategoria').addEventListener('submit', function(e) {
+    e.preventDefault();
     const modal = bootstrap.Modal.getInstance(document.getElementById('categoriaModal'));
-    if (modal) modal.hide();
+    this.submit();
 });
 </script>
 {% endblock %}

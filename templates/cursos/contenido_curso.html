@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-4">
+    <h2>{{ curso.titulo }}</h2>
+    <p>{{ curso.descripcion }}</p>
+</div>
+
+{% if modulos %}
+    <div class="accordion" id="accordionModulos">
+        {% for modulo in modulos %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ modulo.id }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#collapse{{ modulo.id }}" aria-expanded="false" aria-controls="collapse{{ modulo.id }}">
+                        <strong>{{ modulo.titulo }}</strong>
+                    </button>
+                </h2>
+                <div id="collapse{{ modulo.id }}" class="accordion-collapse collapse" 
+                     aria-labelledby="heading{{ modulo.id }}" data-bs-parent="#accordionModulos">
+                    <div class="accordion-body">
+                        <p>{{ modulo.descripcion }}</p>
+                        
+                        {% if modulo.clases.all %}
+                            <div class="list-group mt-3">
+                                {% for clase in modulo.clases.all %}
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <strong>{{ clase.titulo }}</strong>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No hay clases en este módulo</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">Este curso aún no tiene módulos disponibles</div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{% url 'detalle_curso' curso.id %}" class="btn btn-secondary">Volver</a>
+</div>
+{% endblock %}
