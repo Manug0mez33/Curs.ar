@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, Curso, Modulo, Clase, Inscripcion
+from .models import Categoria, Curso, Modulo, Clase, Inscripcion, Resena
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
@@ -36,5 +36,13 @@ class InscripcionAdmin(admin.ModelAdmin):
     list_filter = ('curso', 'fecha_inscripcion')
     search_fields = ('usuario__username', 'curso__titulo')
     readonly_fields = ('fecha_inscripcion',)
+
+@admin.register(Resena)
+class ResenaAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'curso', 'calificacion', 'fecha')
+    list_filter = ('calificacion', 'curso', 'fecha')
+    search_fields = ('usuario__username', 'curso__titulo', 'comentario')
+    readonly_fields = ('fecha',)
+
 
 

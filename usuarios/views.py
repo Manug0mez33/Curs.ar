@@ -19,9 +19,9 @@ def registrarse(request):
 def perfil(request):
     inscripciones = Inscripcion.objects.filter(usuario=request.user).select_related('curso')
     
-    context = {
+    datos_perfil = {
         'inscripciones': inscripciones,
         'total_cursos': inscripciones.count()
     }
     
-    return render(request, 'perfil/perfil.html', context)
+    return render(request, 'perfil/perfil.html', datos_perfil)

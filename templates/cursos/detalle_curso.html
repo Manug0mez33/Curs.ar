@@ -13,7 +13,7 @@
             {% if curso.imagen %}
                 <img src="{{ curso.imagen.url }}" alt="{{ curso.titulo }}">
             {% else %}
-                <img src="/media/default_course_image.jpg" alt="{{ curso.titulo }}">
+                <img src="/media/imagen_por_defecto.jpg" alt="{{ curso.titulo }}">
             {% endif %}
         </div>
         <p class="card-text"><strong>Instructor:</strong> {{ curso.instructor.nombre }} {{ curso.instructor.apellido }}</p>
@@ -34,6 +34,56 @@
                 <a href="{% url 'login' %}" class="btn btn-primary">Inicia Sesión para Inscribirse</a>
             {% endif %}
         </div>
+    </div>
+</div>
+
+{% if user.is_authenticated and inscripto %}
+<div class="card mt-4">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">Dejar una Reseña</h5>
+    </div>
+    <div class="card-body">
+        <a href="{% url 'crear_resena' curso.id %}" class="btn btn-outline-primary">
+            {% if resena_existente %}
+                <i class="fas fa-pen"></i> Editar Reseña
+            {% else %}
+                <i class="fas fa-pen"></i> Crear Reseña
+            {% endif %}
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<div class="card mt-4">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">Reseñas de Estudiantes</h5>
+    </div>
+    <div class="card-body">
+        {% if curso.resenas.all %}
+            {% for resena in curso.resenas.all %}
+                <div class="border-bottom pb-3 mb-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="mb-1">{{ resena.usuario.nombre }} {{ resena.usuario.apellido }}</h6>
+                            <p class="text-warning mb-1">
+                                {{ resena.calificacion }} ⭐
+                            </p>
+                            <p class="text-muted small mb-2">{{ resena.fecha|date:"d/m/Y H:i" }}</p>
+                        </div>
+                        {% if user.is_authenticated and user == resena.usuario %}
+                            <div>
+                                <a href="{% url 'eliminar_resena' resena.id %}" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <p class="card-text">{{ resena.comentario }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted mb-0">No hay reseñas aún. ¡Sé el primero en dejar una!</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

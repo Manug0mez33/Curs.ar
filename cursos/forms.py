@@ -1,5 +1,5 @@
 from django import forms
-from .models import Curso, Modulo, Clase
+from .models import Curso, Modulo, Clase, Resena
 
 class CursoForm(forms.ModelForm):
     class Meta:
@@ -104,6 +104,22 @@ class ClaseForm(forms.ModelForm):
                 'class': 'form-control',
                 'min': '1',
                 'placeholder': 'Ej: 1',
+                'required': True
+            })
+        }
+
+class ResenaForm(forms.ModelForm):
+    class Meta:
+        model = Resena
+        fields = ['calificacion', 'comentario']
+        widgets = {
+            'calificacion': forms.RadioSelect(attrs={
+                'class': 'form-check-input',
+            }),
+            'comentario': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Cuéntanos tu experiencia con el curso...',
                 'required': True
             })
         }

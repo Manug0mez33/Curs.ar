@@ -56,3 +56,19 @@ class Inscripcion(models.Model):
     def __str__(self):
         return f"{self.usuario.username} - {self.curso.titulo}"
 
+class Resena(models.Model):
+    calificaciones = [(i, i) for i in range(1, 6)]
+    
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, related_name='resenas', on_delete=models.CASCADE)
+    calificacion = models.IntegerField(choices=calificaciones, default=5)
+    comentario = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('usuario', 'curso')
+        ordering = ['-fecha']
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.curso.titulo} ({self.calificacion}⭐)"
+

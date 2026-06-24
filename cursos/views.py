@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from cursos.models import Curso, Categoria, Inscripcion, Modulo, Clase
-from cursos.forms import CursoForm, ModuloForm, ClaseForm
+from cursos.models import Curso, Categoria, Inscripcion, Modulo, Clase, Resena
+from cursos.forms import CursoForm, ModuloForm, ClaseForm, ResenaForm
 
 
 def inicio(request):
@@ -13,13 +13,17 @@ def inicio(request):
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
     inscripto = False
+    resena_existente = None
     
     if request.user.is_authenticated:
         inscripto = Inscripcion.objects.filter(usuario=request.user, curso=curso).exists()
+        if inscripto:
+            resena_existente = Resena.objects.filter(usuario=request.user, curso=curso).first()
     
     return render(request, 'cursos/detalle_curso.html', {
         'curso': curso,
-        'inscripto': inscripto
+        'inscripto': inscripto,
+        'resena_existente': resena_existente
     })
 
 @login_required
@@ -56,7 +60,6 @@ def contenido_curso(request, curso_id):
 @login_required
 
 def crear_curso(request):
-
     if not request.user.es_instructor:
         messages.error(request, 'Solo los instructores pueden crear cursos')
         return redirect('inicio')
@@ -85,7 +88,6 @@ def guardar_categoria(request):
 
 @login_required
 def eliminar_curso(request, curso_id):
-    """Elimina un curso (solo el instructor)"""
     curso = get_object_or_404(Curso, id=curso_id)
     
     if curso.instructor != request.user:
@@ -106,7 +108,6 @@ def eliminar_curso(request, curso_id):
 
 @login_required
 def listar_modulos(request, curso_id):
-    """Lista los módulos de un curso (solo el instructor)"""
     curso = get_object_or_404(Curso, id=curso_id)
     
     if curso.instructor != request.user:
@@ -121,7 +122,6 @@ def listar_modulos(request, curso_id):
 
 @login_required
 def crear_modulo(request, curso_id):
-    """Crea un nuevo módulo"""
     curso = get_object_or_404(Curso, id=curso_id)
     
     if curso.instructor != request.user:
@@ -146,7 +146,6 @@ def crear_modulo(request, curso_id):
 
 @login_required
 def editar_modulo(request, modulo_id):
-    """Edita un módulo"""
     modulo = get_object_or_404(Modulo, id=modulo_id)
     
     if modulo.curso.instructor != request.user:
@@ -170,7 +169,6 @@ def editar_modulo(request, modulo_id):
 
 @login_required
 def eliminar_modulo(request, modulo_id):
-    """Elimina un módulo"""
     modulo = get_object_or_404(Modulo, id=modulo_id)
     
     if modulo.curso.instructor != request.user:
@@ -194,7 +192,6 @@ def eliminar_modulo(request, modulo_id):
 
 @login_required
 def crear_clase(request, modulo_id):
-    """Crea una nueva clase"""
     modulo = get_object_or_404(Modulo, id=modulo_id)
     
     if modulo.curso.instructor != request.user:
@@ -220,7 +217,6 @@ def crear_clase(request, modulo_id):
 
 @login_required
 def editar_clase(request, clase_id):
-    """Edita una clase"""
     clase = get_object_or_404(Clase, id=clase_id)
     
     if clase.modulo.curso.instructor != request.user:
@@ -245,7 +241,6 @@ def editar_clase(request, clase_id):
 
 @login_required
 def eliminar_clase(request, clase_id):
-    """Elimina una clase"""
     clase = get_object_or_404(Clase, id=clase_id)
     
     if clase.modulo.curso.instructor != request.user:
@@ -263,4 +258,53 @@ def eliminar_clase(request, clase_id):
         'clase': clase,
         'modulo': clase.modulo,
         'curso': clase.modulo.curso
+    })
+
+@login_required
+def crear_resena(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    
+    inscripcion = Inscripcion.objects.filter(usuario=request.user, curso=curso).first()
+    if not inscripcion:
+        messages.error(request, 'Debes estar inscripto en el curso para dejar una reseña')
+        return redirect('detalle_curso', curso_id=curso_id)
+    
+    resena_existente = Resena.objects.filter(usuario=request.user, curso=curso).first()
+    
+    if request.method == 'POST':
+        form = ResenaForm(request.POST, instance=resena_existente)
+        if form.is_valid():
+            resena = form.save(commit=False)
+            resena.usuario = request.user
+            resena.curso = curso
+            resena.save()
+            messages.success(request, 'Reseña guardada exitosamente')
+            return redirect('detalle_curso', curso_id=curso_id)
+    else:
+        form = ResenaForm(instance=resena_existente)
+    
+    return render(request, 'cursos/crear_resena.html', {
+        'form': form,
+        'curso': curso,
+        'resena_existente': resena_existente
+    })
+
+@login_required
+def eliminar_resena(request, resena_id):
+    resena = get_object_or_404(Resena, id=resena_id)
+    
+    if resena.usuario != request.user:
+        messages.error(request, 'No tienes permiso para eliminar esta reseña')
+        return redirect('detalle_curso', curso_id=resena.curso.id)
+    
+    curso_id = resena.curso.id
+    
+    if request.method == 'POST':
+        resena.delete()
+        messages.success(request, 'Reseña eliminada exitosamente')
+        return redirect('detalle_curso', curso_id=curso_id)
+    
+    return render(request, 'cursos/confirmar_eliminar_resena.html', {
+        'resena': resena,
+        'curso': resena.curso
     })
